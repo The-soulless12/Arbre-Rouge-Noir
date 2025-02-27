@@ -1,19 +1,95 @@
 #include "biblio.h"
 #include "biblio.c"
+#define CLEAR "cls"
+
+void afficher_menu() {
+    printf("\nARBRE ROUGE ET NOIR - THE SOULLESS\n");
+    printf("1. Ajouter un noeud\n");
+    printf("2. Supprimer un noeud\n");
+    printf("3. Rechercher un noeud\n");
+    printf("4. Quitter\n");
+    printf("Votre choix : ");
+}
+
+int check_entier() {
+    int valeur;
+    if (scanf("%d", &valeur) != 1) {
+        while (getchar() != '\n');
+        return -1;
+    }
+    return valeur;
+}
 
 int main() {
     ArbreRN *arbre = creer_arbre();
+    int choix, valeur;
 
-    int valeurs[] = {10, 20, 30, 15, 25, 5};
-    int taille = sizeof(valeurs) / sizeof(valeurs[0]);
+    do {
+        system(CLEAR);
+        afficher_menu();
+        choix = check_entier();
 
-    for (int i = 0; i < taille; i++) {
-        Noeud *nouveau = creer_noeud(arbre, valeurs[i]);
-        printf("Noeud cree : %d\n", nouveau->valeur);
-    }
+        switch (choix) {
+            case 1:
+                do {
+                    system(CLEAR);
+                    printf("\nARBRE ROUGE ET NOIR - THE SOULLESS\n");
+                    printf("\nEntrez une valeur a inserer : ");
+                    valeur = check_entier();
 
-    printf("Affichage de l'arbre:\n");
-    afficher_arbre(arbre->racine, arbre->nil, 0);
+                    if (valeur != -1) {
+                        inserer(arbre, valeur);
+                        printf("Affichage de l'arbre:\n\n");
+                        afficher_arbre(arbre->racine, arbre->nil, 0);
+                    }
+                    else {
+                        printf("Valeur incorrecte !\n");
+                    }
+
+                    printf("\nPour inserer un autre nombre, tapez 0.\nPour revenir au menu principal, tapez n'importe quelle autre touche.\nVotre choix : ");
+                    choix = check_entier();
+                } while (choix == 0);
+                break;
+
+            case 2:
+                system(CLEAR);
+                printf("\nARBRE ROUGE ET NOIR - THE SOULLESS\n");
+                printf("Suppression non implementee.\n");
+                break;
+
+            case 3:
+                do {
+                    system(CLEAR);
+                    printf("\nARBRE ROUGE ET NOIR - THE SOULLESS\n");
+                    printf("Entrez un nombre a rechercher : ");
+                    valeur = check_entier();
+
+                    if (valeur != -1) {
+                        if (rechercher(arbre, valeur)) {
+                            printf("La valeur %d existe dans l'arbre.\n", valeur);
+                        } else {
+                            printf("La valeur %d n'existe pas dans l'arbre.\n", valeur);
+                        }
+                    }
+                    else {
+                        printf("Valeur incorrecte !\n");
+                    }
+
+                    printf("\nPour rechercher un autre nombre, tapez 0.\nPour revenir au menu principal, tapez n'importe quelle autre touche.\nVotre choix : ");
+                    choix = check_entier();
+                } while (choix == 0);
+                break;
+
+            case 4:
+                system(CLEAR);
+                printf("Fermeture du programme...\n");
+                break;
+
+            default:
+                system(CLEAR);
+                break;
+        }
+    } while (choix != 4);
 
     liberer_arbre(arbre);
     return 0;

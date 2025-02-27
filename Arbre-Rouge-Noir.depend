@@ -1,5 +1,12 @@
 # depslib dependency file v1.0
-1584205420 source:c:\users\admin\documents\rayane dossier etudes\projets s1\arbre-rouge-noir\main.c
+1740679047 source:c:\users\admin\documents\rayane dossier etudes\projets s1\arbre-rouge-noir\main.c
+	"biblio.h"
+	"biblio.c"
+
+1740678800 c:\users\admin\documents\rayane dossier etudes\projets s1\arbre-rouge-noir\biblio.h
 	<stdio.h>
 	<stdlib.h>
+
+1740678790 c:\users\admin\documents\rayane dossier etudes\projets s1\arbre-rouge-noir\biblio.c
+	"biblio.h"
 
