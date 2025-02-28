@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "biblio.h"
 #include "biblio.c"
 #define CLEAR "cls"
@@ -21,6 +24,23 @@ int check_entier() {
     return valeur;
 }
 
+// Fonction pour insérer plusieurs valeurs séparées
+void inserer_valeurs_multiples(ArbreRN *arbre) {
+    char buffer[256];
+    printf("\nEntrez plusieurs valeurs a inserer (separees par des espaces) : ");
+    getchar();
+    fgets(buffer, sizeof(buffer), stdin);
+
+    char *token = strtok(buffer, " ");
+    while (token != NULL) {
+        int valeur;
+        if (sscanf(token, "%d", &valeur) == 1) {
+            inserer(arbre, valeur);
+        }
+        token = strtok(NULL, " ");
+    }
+}
+
 int main() {
     ArbreRN *arbre = creer_arbre();
     int choix, valeur;
@@ -35,21 +55,28 @@ int main() {
                 do {
                     system(CLEAR);
                     printf("\nARBRE ROUGE ET NOIR - THE SOULLESS\n");
-                    printf("\nEntrez une valeur a inserer : ");
-                    valeur = check_entier();
+                    printf("\n1. Inserer une seule valeur.\n2. Inserer plusieurs valeurs.\nVotre choix : ");
+                    int sub_choix = check_entier();
 
-                    if (valeur != -1) {
-                        inserer(arbre, valeur);
-                        printf("Affichage de l'arbre:\n\n");
-                        afficher_arbre(arbre->racine, arbre->nil, 0);
-                    }
-                    else {
-                        printf("Valeur incorrecte !\n");
+                    if (sub_choix == 1) {
+                        printf("\nEntrez une valeur a inserer : ");
+                        valeur = check_entier();
+                        if (valeur != -1) {
+                            inserer(arbre, valeur);
+                        } else {
+                            printf("Valeur incorrecte !\n");
+                        }
+                    } else if (sub_choix == 2) {
+                        inserer_valeurs_multiples(arbre);
                     }
 
-                    printf("\nPour inserer un autre nombre, tapez 0.\nPour revenir au menu principal, tapez n'importe quelle autre touche.\nVotre choix : ");
+                    printf("Affichage de l'arbre:\n\n");
+                    afficher_arbre(arbre->racine, arbre->nil, 0);
+
+                    printf("\nPour inserer d'autres nombres, tapez 0.\nPour revenir au menu principal, tapez une autre touche.\nVotre choix : ");
                     choix = check_entier();
                 } while (choix == 0);
+                choix = 0;
                 break;
 
             case 2:
@@ -63,14 +90,14 @@ int main() {
                         supprimer(arbre, rechercher(arbre, valeur));
                         printf("Affichage de l'arbre:\n\n");
                         afficher_arbre(arbre->racine, arbre->nil, 0);
-                    }
-                    else {
+                    } else {
                         printf("Valeur incorrecte !\n");
                     }
 
-                    printf("\nPour supprimer un autre nombre, tapez 0.\nPour revenir au menu principal, tapez n'importe quelle autre touche.\nVotre choix : ");
+                    printf("\nPour supprimer un autre nombre, tapez 0.\nPour revenir au menu principal, tapez une autre touche.\nVotre choix : ");
                     choix = check_entier();
                 } while (choix == 0);
+                choix = 0;
                 break;
 
             case 3:
@@ -78,22 +105,23 @@ int main() {
                     system(CLEAR);
                     printf("\nARBRE ROUGE ET NOIR - THE SOULLESS\n");
                     printf("Entrez un nombre a rechercher : ");
+                    printf("Entrez un nombre a rechercher : ");
                     valeur = check_entier();
 
                     if (valeur != -1) {
                         if (rechercher(arbre, valeur)) {
-                            printf("La valeur %d existe dans l'arbre.\n", valeur);
+                            printf("\033[1;32mLa valeur %d existe dans l'arbre.\033[0m\n", valeur);
                         } else {
-                            printf("La valeur %d n'existe pas dans l'arbre.\n", valeur);
+                            printf("\033[1;31mLa valeur %d n'existe pas dans l'arbre.\033[0m\n", valeur);
                         }
-                    }
-                    else {
+                    } else {
                         printf("Valeur incorrecte !\n");
                     }
 
-                    printf("\nPour rechercher un autre nombre, tapez 0.\nPour revenir au menu principal, tapez n'importe quelle autre touche.\nVotre choix : ");
+                    printf("\nPour rechercher un autre nombre, tapez 0.\nPour revenir au menu principal, tapez une autre touche.\nVotre choix : ");
                     choix = check_entier();
                 } while (choix == 0);
+                choix = 0;
                 break;
 
             case 4:

@@ -39,10 +39,18 @@ Noeud *creer_noeud(ArbreRN *arbre, int valeur) {
 void afficher_arbre(Noeud *racine, Noeud *nil, int niveau) {
     if (racine != nil) {
         afficher_arbre(racine->droite, nil, niveau + 1);
+
         for (int i = 0; i < niveau; i++) {
             printf("    ");
         }
-        printf("%d(%s)\n", racine->valeur, racine->couleur == ROUGE ? "R" : "N");
+
+        // Affichage en rouge si le nœud est ROUGE, sinon en couleur normale
+        if (racine->couleur == ROUGE) {
+            printf("\033[1;31m%d(R)\033[0m\n", racine->valeur);
+        } else {
+            printf("\033[1;34m%d(N)\033[0m\n", racine->valeur);
+        }
+
         afficher_arbre(racine->gauche, nil, niveau + 1);
     } else {
         if (niveau > 0) {
@@ -105,7 +113,7 @@ void rotation_droite(ArbreRN *arbre, Noeud *x) {
     x->parent = y; // Mettre à jour le parent de X
 }
 
-// Correction après insertion
+// Corrige les couleurs après une insertion
 void corriger_insertion(ArbreRN *arbre, Noeud *z) {
     while (z->parent->couleur == ROUGE) { // Tant que le parent est rouge
         if (z->parent == z->parent->parent->gauche) { // Si le parent est un fils gauche
@@ -147,7 +155,7 @@ void corriger_insertion(ArbreRN *arbre, Noeud *z) {
     arbre->racine->couleur = NOIR; // La racine est toujours noire
 }
 
-// Insertion d'un nœud dans un arbre rouge-noir
+// Insertion d'un noeud dans un arbre rouge-noir
 void inserer(ArbreRN *arbre, int valeur) {
     Noeud *z = creer_noeud(arbre, valeur); // Création du nouveau nœud rouge
     Noeud *y = arbre->nil;
@@ -215,7 +223,7 @@ void greffe_sous_arbre(ArbreRN *arbre, Noeud *u, Noeud *v) {
     }
 }
 
-// Trouve le nœud avec la plus petite valeur dans un sous-arbre
+// Trouve le noeud avec la plus petite valeur dans un sous-arbre
 Noeud* minimum(ArbreRN *arbre, Noeud *noeud) {
     while (noeud->gauche != arbre->nil) {
         noeud = noeud->gauche;
@@ -223,7 +231,7 @@ Noeud* minimum(ArbreRN *arbre, Noeud *noeud) {
     return noeud;
 }
 
-// Suppression d'un nœud dans un arbre rouge-noir
+// Suppression d'un noeud dans un arbre rouge-noir
 void supprimer(ArbreRN *arbre, Noeud *x) {
     Noeud *y = x;
     Couleur couleur_origine = y->couleur;
@@ -241,7 +249,7 @@ void supprimer(ArbreRN *arbre, Noeud *x) {
         z = y->droite;
 
         if (y->parent == x) {
-            if (z) z->parent = y;
+            z->parent = y;
         } else {
             greffe_sous_arbre(arbre, y, y->droite);
             y->droite = x->droite;
@@ -259,6 +267,7 @@ void supprimer(ArbreRN *arbre, Noeud *x) {
     }
 }
 
+// Corrige les couleurs après une suppression
 void corriger_suppression(ArbreRN *arbre, Noeud *x) {
     while (x != arbre->racine && x->couleur == NOIR) {
         if (x == x->parent->gauche) { // Si X est un fils gauche
