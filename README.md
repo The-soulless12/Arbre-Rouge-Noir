@@ -13,6 +13,7 @@ Le nœud contient :
 - Un pointeur vers son parent.
 - Un pointeur vers son fils gauche.
 - Un pointeur vers son fils droit.
+
 L'arbre contient :
 - Un pointeur vers la racine.
 - Un nœud nil, représentant les feuilles NULL noires.
